@@ -3,20 +3,91 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
+<title>Vice City Cover Lab — GTA-style Cover Maker</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
+<main class="lab" id="lab">
+  <section class="panel sidebar" id="sidebar" aria-label="Cover controls">
+    <h1>Vice City<br>Cover Lab</h1>
+    <p class="tagline">Turn your photos into a multi-panel poster cover, GTA 6 style. Fully offline — your photos never leave this machine.</p>
+
+    <div class="group">
+      <h2>1 · Photos</h2>
+      <label class="upload" for="photoInput">Add photos
+        <input id="photoInput" type="file" accept="image/*" multiple>
+      </label>
+      <p class="hint">Or drag photos onto the preview. Click a photo, then a panel, to place it.</p>
+      <div class="thumbs" id="thumbs" aria-label="Loaded photos"></div>
+      <button id="loadSamples" type="button" class="ghost">Load the two sample photos</button>
+    </div>
+
+    <div class="group">
+      <h2>2 · Layout</h2>
+      <div class="choices" id="layoutChoices" role="group" aria-label="Panel layout"></div>
+    </div>
+
+    <div class="group">
+      <h2>3 · Colour grade</h2>
+      <div class="choices" id="gradeChoices" role="group" aria-label="Colour grade"></div>
+    </div>
+
+    <div class="group">
+      <h2>4 · Lettering</h2>
+      <div class="choices" id="letteringChoices" role="group" aria-label="Title lettering style"></div>
+    </div>
+
+    <div class="group">
+      <h2>5 · Caption</h2>
+      <label>Title
+        <input id="titleInput" type="text" maxlength="24" value="Vice City" autocomplete="off">
+      </label>
+      <label>Subtitle
+        <input id="subtitleInput" type="text" maxlength="40" value="Sunset heist nights" autocomplete="off">
+      </label>
+      <label>Badge
+        <input id="badgeInput" type="text" maxlength="24" value="EST. 2026" autocomplete="off">
+      </label>
+    </div>
+
+    <div class="group">
+      <h2>6 · Selected panel</h2>
+      <p class="hint" id="panelHint">Click a panel in the preview to select it, drag to move the photo, scroll to zoom.</p>
+      <label>Zoom
+        <input id="zoomInput" type="range" min="1" max="2.5" step="0.01" value="1.15">
+      </label>
+      <div class="row">
+        <button id="fillAll" type="button" class="ghost">Fill every panel with this photo</button>
+        <button id="shuffleBtn" type="button" class="ghost">Shuffle panels</button>
+      </div>
+      <div class="row">
+        <button id="undoBtn" type="button" class="ghost" disabled>Undo</button>
+        <button id="redoBtn" type="button" class="ghost" disabled>Redo</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>7 · Export</h2>
+      <label>Post size
+        <select id="sizeSelect">
+          <option value="1080x1080">Square · 1080 × 1080</option>
+          <option value="1080x1350">Portrait · 1080 × 1350</option>
+          <option value="1920x1080" selected>Wide · 1920 × 1080</option>
+        </select>
+      </label>
+      <button id="exportBtn" type="button" class="primary">Export PNG</button>
+      <button id="exportAllBtn" type="button" class="ghost">Export all three sizes</button>
+      <p class="status" id="status" role="status"></p>
+    </div>
   </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
+
+  <section class="panel stage" id="stage" aria-label="Cover preview">
+    <div class="previewWrap" id="previewWrap">
+      <canvas id="preview" width="960" height="540" aria-label="Live cover preview"></canvas>
+      <p class="dropHint" id="dropHint">Drop photos here</p>
+    </div>
+    <p class="stageNote">Live preview — drag a panel to reposition its photo, scroll over it to zoom. Ctrl+Z undoes.</p>
+  </section>
 </main>
 <script type="module" src="./src/main.js"></script>
 </body>
